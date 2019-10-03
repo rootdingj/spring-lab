@@ -31,9 +31,9 @@ public class DatasourceDemoApplication implements CommandLineRunner {
 	}
 
 	private void showConnection() throws SQLException {
-		log.info("数据源信息：{}",dataSource.toString());
+		log.info("DataSource info：{}",dataSource.toString());
 		Connection conn = dataSource.getConnection();
-		log.info("连接信息：{}",conn.toString());
+		log.info("Connection info：{}",conn.toString());
 		conn.close();
 	}
 
