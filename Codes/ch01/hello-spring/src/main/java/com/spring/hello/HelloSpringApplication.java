@@ -1,4 +1,4 @@
-package com.spring.hello.hellospring;
+package com.spring.hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,5 +17,4 @@ public class HelloSpringApplication {
 	public String hello(){
 		return "Hello Spring";
 	}
-
 }
