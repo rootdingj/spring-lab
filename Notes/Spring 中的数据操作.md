@@ -34,6 +34,10 @@ Spring 中的数据操作
 
 # 2、O/R Mapping 实践
 
+## 2.1、连接池 HikariCP
+
+## 2.2、连接池 Alibaba Druid
+
 
 # 3、NoSQL 实践
 
