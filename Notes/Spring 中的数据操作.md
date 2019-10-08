@@ -59,19 +59,50 @@ Alibaba Druid 官网： https://github.com/alibaba/druid/wiki/Druid%E8%BF%9E%E6%
 - 内置加密配置
 - 众多扩展点，⽅方便便进⾏行行定制
 
+### 数据源配置
+- 1.直接配置 DruidDataSource 
+- 2.通过 druid-spring-boot-starter 配置 spring.datasource.druid.*
+```test
+spring.output.ansi.enabled=ALWAYS
 
-### 在 Spring Boot 中的配置
-- Spring Boot 2.x 中默认使用 HikariCP 连接池
-- Spring Boot 1.x 中默认使⽤用 Tomcat 连接池，需要移除 tomcat-jdbc 依赖，spring.datasource.type=com.zaxxer.hikari.HikariDataSource 。
+spring.datasource.url=jdbc:h2:mem:foo
+spring.datasource.username=sa
+## 密码加密 
+spring.datasource.password=n/z7PyA5cvcXvs8px8FVmBVpaRyNsvJb3X7YfS38DJrIg25EbZaZGvH4aHcnc97Om0islpCAPc3MqsGvsrxVJw==
+spring.datasource.druid.connection-properties=config.decrypt=true;config.decrypt.key=${public-key}
+spring.datasource.druid.filter.config.enabled=true
 
-### 常⽤用 HikariCP 配置参数
-- spring.datasource.hikari.maximumPoolSize=10
-- spring.datasource.hikari.minimumIdle=10
-- spring.datasource.hikari.idleTimeout=600000
-- spring.datasource.hikari.connectionTimeout=30000
-- spring.datasource.hikari.maxLifetime=1800000
+spring.datasource.druid.initial-size=5
+spring.datasource.druid.max-active=5
+spring.datasource.druid.min-idle=5
+## Filter 配置
+spring.datasource.druid.filters=conn,config,stat,slf4j
 
-其他配置参考官网
+spring.datasource.druid.test-on-borrow=true
+spring.datasource.druid.test-on-return=true
+spring.datasource.druid.test-while-idle=true
+
+## SQL 防注⼊
+spring.datasource.druid.ﬁlter.wall.enabled=true
+spring.datasource.druid.ﬁlter.wall.db-type=h2
+spring.datasource.druid.ﬁlter.wall.conﬁg.delete-allow=false
+spring.datasource.druid.ﬁlter.wall.conﬁg.drop-table-allow=false
+
+public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9KzX8sXlz+mXRZQCop7NVQLne25pXHtZoDYuMh3bzoGj6v5HvvAQ8CAwEAAQ==
+```
+
+### Druid Filter
+- ⽤用于定制连接池操作的各种环节
+- 可以继承 FilterEventAdapter 以便便⽅方便便地实现 Filter
+- 修改 META-INF/druid-ﬁlter.properties 增加 Filter 配置
+
+### 连接池选择时的考量量点
+- 可靠性
+- 性能
+- 功能
+- 可运维性 
+- 可扩展性
+- 其他
 
 ## 2.2、连接池 Alibaba Druid
 
