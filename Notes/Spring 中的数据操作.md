@@ -37,9 +37,7 @@ Spring 中的数据操作
   - 有多个 DataSource 时系统如何判断
   - 对应的设施（事务、ORM 等）如何选择 DataSource
 
-# 2、O/R Mapping 实践
-
-## 2.1、连接池 HikariCP
+## 1.3、连接池 HikariCP
 HikariCP 官网： https://github.com/brettwooldridge/HikariCP
 
 ### HikariCP 为什什么快：
@@ -49,7 +47,7 @@ HikariCP 官网： https://github.com/brettwooldridge/HikariCP
     - 无锁集合 ConcurrentBag
     - 代理理类的优化（如，⽤用 invokestatic 代替了了 invokevirtual）
 
-## 2.2、连接池 Druid
+## 1.4、连接池 Druid
 Alibaba Druid 官网： https://github.com/alibaba/druid/wiki/Druid%E8%BF%9E%E6%8E%A5%E6%B1%A0%E4%BB%8B%E7%BB%8D
 
 ### 实⽤用的功能：
@@ -104,7 +102,38 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 - 可扩展性
 - 其他
 
-## 2.2、连接池 Alibaba Druid
+## 1.5、通过 Spring JDBC 访问数据库
+
+### spring-jdbc 操作类：
+- core，JdbcTemplate 等相关核⼼心接⼝和类
+- datasource，数据源相关的辅助类
+- object，将基本的 JDBC 操作封装成对象
+- support，错误码等其他辅助⼯工具
+
+### 常⽤用的 Bean 注解：
+- @Component
+- @Repository
+- @Service
+- @Controller
+    - @RestController
+
+### 简单的 JDBC 操作
+#### JdbcTemplate
+- query
+- queryForObject
+- queryForList
+- update
+- execute
+- batchUpdate
+    - BatchPreparedStatementSetter
+
+#### NamedParameterJdbcTemplate 
+- batchUpdate
+    - SqlParameterSourceUtils.createBatch
+
+# 2、O/R Mapping 实践
+
+
 
 
 # 3、NoSQL 实践
@@ -113,13 +142,12 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 # 4、数据访问进阶
 
 
-http://localhost:8080/actuator/beans
+
 
 
 # 参考资料
-
-- Java 编程思想
-- [面向对象编程三大特性 ------ 封装、继承、多态](http://blog.csdn.net/jianyuerensheng/article/details/51602015)
+- [Spring Framework Documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/)
+- [Spring Cloud 中文网](https://www.springcloud.cc/)
 
 
 
