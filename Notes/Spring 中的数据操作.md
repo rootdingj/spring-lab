@@ -42,7 +42,7 @@ HikariCP 官网： https://github.com/brettwooldridge/HikariCP
 
 ### HikariCP 为什什么快：
 - 1.字节码级别优化（很多⽅方法通过 JavaAssist ⽣生成） 
-- 2.⼤大量量⼩小改进 
+- 2.⼤量小优化 
     - ⽤用 FastStatementList 代替 ArrayList
     - 无锁集合 ConcurrentBag
     - 代理理类的优化（如，⽤用 invokestatic 代替了了 invokevirtual）
@@ -55,7 +55,7 @@ Alibaba Druid 官网： https://github.com/alibaba/druid/wiki/Druid%E8%BF%9E%E6%
 - ExceptionSorter，针对主流数据库的返回码都有⽀支持
 - SQL 防注⼊入
 - 内置加密配置
-- 众多扩展点，⽅方便便进⾏行行定制
+- 众多扩展点，⽅便进⾏行定制
 
 ### 数据源配置
 - 1.直接配置 DruidDataSource 
@@ -131,6 +131,50 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 - batchUpdate
     - SqlParameterSourceUtils.createBatch
 
+## 1.6、Spring 的事物抽象
+
+### 什么是事物？
+> 事务是逻辑上的一组操作，要么都执行，要么都不执行。
+
+### 事物的特性（ACID）
+- **原子性**： 事务是最小的执行单位，不允许分割；事务的原子性确保动作要么全部完成，要么完全不起作用。
+- **一致性**： 执行事务前后，数据保持一致。
+- **隔离性**： 并发访问数据库时，一个用户的事物不被其他事物所干扰，各并发事务之间数据库是独立的。
+- **持久性**: 一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。
+
+### Spring事务管理接口
+事务管理，就是按照给定的事务规则来执行提交或者回滚操作。
+
+- ``PlatformTransactionManager`` : 平台事务管理器
+- ``TransactionDefinition``： 事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)
+- ``TransactionStatus``： 事务运行状态
+
+### 相关平台的事物实现
+<div align="center"> <img src="../Assets/images/02.spring-transaction.png" width="480px"> </div><br>
+
+### 事务隔离特性
+| 隔离性  | 值  | 脏读 | 不可重复读  | 幻读 |
+| :--:    | :--: | :--: | :--: | :--: |
+|ISOLATION_READ_UNCOMMITTED |  1  | Y | Y | Y |
+|ISOLATION_READ_COMMITTED   |  2  | N | Y | Y |
+|ISOLATION_REPEATABLE_READ  |  3  | N | N | Y |
+|ISOLATION_SERIALIZABLE     |  4  | N | N | N |
+
+### 事务传播特性 
+
+| 传播性   | 值   | 描述 |
+| :--:    | :--: | :--: |
+|PROPAGATION_REQUIRED     |  0  | 当前有事务就用当前的，没有就⽤用新的 |
+|PROPAGATION_SUPPORTS     |  1  | 事务可有可无，不是必须的 |
+|PROPAGATION_MANDATORY    |  2  | 当前⼀一定要有事务，不然就抛异常   |
+|PROPAGATION_REQUIRES_NEW |  3  | 无论是否有事务，都起个新的事务 |
+|PROPAGATION_NOT_SUPPORTED| 4   | 不支持事务，按非事务⽅方式运⾏ |
+|PROPAGATION_NEVER        | 5   | 不支持事务，如果有事务则抛异常 |
+|PROPAGATION_NESTED       | 6   | 当前有事务就在当前事务里再起⼀一个事务|
+
+
+
+
 # 2、O/R Mapping 实践
 
 
@@ -143,11 +187,10 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 
 
 
-
-
 # 参考资料
 - [Spring Framework Documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/)
 - [Spring Cloud 中文网](https://www.springcloud.cc/)
+- [spring事务管理(详解和实例)](https://www.cnblogs.com/yixianyixian/p/8372832.html)
 
 
 
