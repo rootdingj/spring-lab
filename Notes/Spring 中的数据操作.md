@@ -166,13 +166,17 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 | :--:    | :--: | :--: |
 |PROPAGATION_REQUIRED     |  0  | 当前有事务就用当前的，没有就⽤用新的 |
 |PROPAGATION_SUPPORTS     |  1  | 事务可有可无，不是必须的 |
-|PROPAGATION_MANDATORY    |  2  | 当前⼀一定要有事务，不然就抛异常   |
+|PROPAGATION_MANDATORY    |  2  | 当前一定要有事务，不然就抛异常   |
 |PROPAGATION_REQUIRES_NEW |  3  | 无论是否有事务，都起个新的事务 |
-|PROPAGATION_NOT_SUPPORTED| 4   | 不支持事务，按非事务⽅方式运⾏ |
+|PROPAGATION_NOT_SUPPORTED| 4   | 不支持事务，按非事务方式运⾏ |
 |PROPAGATION_NEVER        | 5   | 不支持事务，如果有事务则抛异常 |
 |PROPAGATION_NESTED       | 6   | 当前有事务就在当前事务里再起⼀一个事务|
 
+### 编程式事务
 
+
+
+### 申明式事务
 
 
 # 2、O/R Mapping 实践
