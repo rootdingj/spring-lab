@@ -173,11 +173,30 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 |PROPAGATION_NESTED       | 6   | 当前有事务就在当前事务里再起⼀一个事务|
 
 ### 编程式事务
+- TransactionTemplate 
+    - TransactionCallback
+    - TransactionCallbackWithoutResult
 
-
+- PlatformTransactionManager 
+    - 可以传入TransactionDeﬁnition进行定义
 
 ### 申明式事务
+- 开启事务注解的⽅方式 ：
+    - @EnableTransactionManagement
+    - \<tx:annotation-driven/>
 
+- 一些配置:
+    - proxyTargetClass
+    - mode
+    - order
+
+- @Transactional 
+    - transactionManager
+    - propagation
+    - isolation
+    - timeout
+    - readOnly
+    - 怎么判断回滚
 
 # 2、O/R Mapping 实践
 
