@@ -198,6 +198,10 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
     - readOnly
     - 怎么判断回滚
 
+## 1.7、Spring 的 JDBC 抽象
+
+
+
 # 2、O/R Mapping 实践
 
 
