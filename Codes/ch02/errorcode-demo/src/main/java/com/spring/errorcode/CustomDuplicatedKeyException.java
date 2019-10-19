@@ -1,4 +1,4 @@
-package com.spring.errorcode.errorcodedemo;
+package com.spring.errorcode;
 
 import org.springframework.dao.DuplicateKeyException;
 

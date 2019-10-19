@@ -23,7 +23,7 @@
             <bean class="org.springframework.jdbc.support.CustomSQLErrorCodesTranslation">
                 <property name="errorCodes" value="23001,23505" />
                 <property name="exceptionClass"
-                          value="com.spring.errorcode.errorcodedemo.CustomDuplicatedKeyException" />
+                          value="com.spring.errorcode.CustomDuplicatedKeyException" />
             </bean>
         </property>
     </bean>

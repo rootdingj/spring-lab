@@ -1,13 +1,13 @@
-package com.spring.errorcode.errorcodedemo;
+package com.spring.errorcode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ErrorcodeDemoApplication {
+public class ErrorCodeDemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ErrorcodeDemoApplication.class, args);
+		SpringApplication.run(ErrorCodeDemoApplication.class, args);
 	}
 
 }

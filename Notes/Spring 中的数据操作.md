@@ -198,14 +198,76 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
     - readOnly
     - 怎么判断回滚
 
-## 1.7、Spring 的 JDBC 抽象
+## 1.7、Spring 的 JDBC 异常抽象
+Spring 会将数据操作的异常转换为 DataAccessException，⽆无论使⽤用何种数据访问⽅方式，都能使⽤用⼀一样的异常。
 
+### JDBC 异常类型
+<div align="center"> <img src="../Assets/images/02.DataAccessException.png" width="480px"> </div><br>
 
+### Spring是怎么认识那些错误码的
+- 通过 SQLErrorCodeSQLExceptionTranslator 解析错误码 
+- ErrorCode 定义 
+    - org/springframework/jdbc/support/sql-error-codes.xml Spring自带错误码
+    - Classpath 下的 sql-error-codes.xml 用户自定义错误码
+
+### 定制错误码解析逻辑
+```Test
+<bean id="H2" class="org.springframework.jdbc.support.SQLErrorCodes">
+        <property name="badSqlGrammarCodes">
+            <value>42000,42001,42101,42102,42111,42112,42121,42122,42132</value>
+        </property>
+        <property name="duplicateKeyCodes">
+            <value>23001,23505</value>
+        </property>
+        <property name="dataIntegrityViolationCodes">
+            <value>22001,22003,22012,22018,22025,23000,23002,23003,23502,23503,23506,23507,23513</value>
+        </property>
+        <property name="dataAccessResourceFailureCodes">
+            <value>90046,90100,90117,90121,90126</value>
+        </property>
+        <property name="cannotAcquireLockCodes">
+            <value>50200</value>
+        </property>
+        <property name="customTranslations">
+            <bean class="org.springframework.jdbc.support.CustomSQLErrorCodesTranslation">
+                <property name="errorCodes" value="23001,23505" />
+                <property name="exceptionClass"
+                          value="com.spring.errorcode.CustomDuplicatedKeyException" />
+            </bean>
+        </property>
+    </bean>
+```
 
 # 2、O/R Mapping 实践
 
+## 2.1.认识 Spring Data JPA
 
+### 对象与关系不匹配
+|     | Object   | RDBMS |
+| :--:     | :--: | :--: |
+| 粒度     |  类      | 表   |
+| 继承     |  有      | 没有 |
+| 唯一性   |  a == b  | 主键 |
+| 关联     |  引用    | 外键 |
+| 数据访问 |  逐级访问 | 表于表之间的连接 |
 
+### JPA 简介
+
+JPA (``Java Persistence API``) ，Java持久层API，是JDK 5.0注解或XML描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中的持久化模型。
+JPA 为对象关系映射提供了一种基于 POJO 的持久化模型 ：
+
+**JPA 包括以下3方面的内容**：
+
+- 一套 API 标准。在 javax.persistence 的包下面，用来操作实体对象，执行 CRUD 操作，框架在后台替代我们完成所有的事情，开发者从烦琐的 JDBC 和 SQL 代码中解脱出来。
+
+- 面向对象的查询语言：Java Persistence QueryLanguage（JPQL）。通过面向对象而非面向数据库的查询语言查询数据，避免程序的SQL语句紧密耦合
+
+- ORM（object/relational metadata）元数据的映射。JPA 支持 XML 和 JDK5.0注 解两种元数据的形式，元数据描述对象和表之间的映射关系，框架据此将实体对象持久化到数据库表中。
+
+### Spring Data 
+Spring Data 提供一个大家熟悉的、一致的、基于Spring的数据访问编程模型，同时仍然保留底层数据存储的特殊特性。它可以轻松地让开发者使用数据访问技术，包括关系数据库、非关系数据库（NoSQL）和基于云的数据服务。
+
+Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA 规范的再次封装抽象。
 
 # 3、NoSQL 实践
 
