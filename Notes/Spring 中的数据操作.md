@@ -314,6 +314,71 @@ Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA �
 
 - @JsonIgnore：在json序列化时将java bean中的一些属性忽略掉，序列化和反序列化都受影响
 
+## 2.2.JPA 中常用注解
+通过简单注解来实现精简代码来达到消除冗长代码的目的。
+
+### 常用注解
+
+- ``val``：用在局部变量前面，相当于将变量声明为 final
+- ``@NonNull``：给方法参数增加这个注解会自动在方法内对该参数进行是否为空的校验，如果为空，则抛出 NPE（NullPointerException）
+- ``@Cleanup``：自动管理资源，用在局部变量之前，在当前变量范围内即将执行完毕退出之前会自动清理资源，自动生成 try-finally 这样的代码来关闭流
+- ``@Getter/@Setter``：用在属性上，再也不用自己手写 setter 和 getter 方法了，还可以指定访问范围
+- ``@ToString``：用在类上，可以自动覆写 toString 方法，当然还可以加其他参数，例如 @ToString(exclude=”id”) 排除 id 属性，或者 @ToString(callSuper=true, includeFieldNames=true) 调用父类的 toString 方法，包含所有属性
+- ``@EqualsAndHashCode``：用在类上，自动生成 equals 方法和 hashCode 方法
+- ``@NoArgsConstructor, @RequiredArgsConstructor and @AllArgsConstructor``：用在类上，自动生成无参构造和使用所有参数的构造函数以及把所有 @NonNull 属性作为参数的构造函数，如果指定 staticName = “of” 参数，同时还会生成一个返回类对象的静态工厂方法，比使用构造函数方便很多
+- ``@Data``：注解在类上，相当于同时使用了 @ToString、@EqualsAndHashCode、@Getter、@Setter和@RequiredArgsConstrutor 这些注解，对于 POJO 类十分有用
+- ``@Value``：用在类上，是 @Data 的不可变形式，相当于为属性添加 final 声明，只提供 getter 方法，而不提供 setter 方法
+- ``@Builder``：用在类、构造器、方法上，为你提供复杂的 builder APIs，让你可以像如下方式一样调用 Person.builder().name("Adam Savage").city("San Francisco").job("Mythbusters").job("Unchained Reaction").build(); 更多说明参考 Builder
+
+### Lombok 使用需注意的点
+
+- 在类需要序列化、反序列化时详细控制字段时。
+- 在使用lombok 虽然能够省去手动创建 setter 和 getter 方法繁琐，
+但是却降低了源代码文件的可读性和完整性，降低了阅读源代码的舒适度。
+- 使用 @Slf4 还是 @Log4J 看教程中使用的框架
+- 选择合适的地方使用Lombox，例如:POJO ，因为 POJO 比较单纯
+
+### 实现原理
+<div align="center"> <img src="../Assets/images/02.lombook-process.png" width="480px"> </div><br>
+Lombok 处理流程作用于 Javac 的编译期，在Javac 解析成抽象语法树之后(AST), Lombok 根据自己的注解处理器，动态的修改 AST，增加新的节点(所谓代码)，最终通过分析和生成字节码。（详见参考）
+
+## 2.3.通过 Spring Data JPA 操作数据库
+### Repository
+- @EnableJpaRepositories ：开启JPA存储库扫描
+- Repository<T, ID> 接⼝
+    - CrudRepository<T, ID> 
+    - PagingAndSortingRepository<T, ID> 
+    - JpaRepository<T, ID> 
+
+### 定义查询    
+- 根据⽅方法名定义查询
+    - find … By … / read … By … / query … By … / get … By … 
+    - count … By … 
+    - … OrderBy … [Asc / Desc] 
+    - And / Or / IgnoreCase 
+    - Top / First / Distinct 
+- 分⻚页查询
+    - PagingAndSortingRepository<T, ID> 
+    - Pageable / Sort 
+    - Slice<T> / Page<T> 
+
+## 2.4.Repository 是怎么从接⼝口变成 Bean 的
+
+### Repository Bean 是如何创建的
+- ``org.springframework.data.jpa.repository.config.JpaRepositoriesRegistrar`` : 激活了 @EnableJpaRepositories ，并 返回了 JpaRepositoryConfigExtension 
+
+- ``RepositoryBeanDeﬁnitionRegistrarSupport.registerBeanDeﬁnitions`` ：为每一个 Repository 注册 Repository Bean（类型是 JpaRepositoryFactoryBean ）
+
+- ``RepositoryConﬁgurationExtensionSupport.getRepositoryConﬁgurations`` ：取得所有Repository 配置
+
+- ``JpaRepositoryFactory.getTargetRepository`` : 创建了 Repository 
+
+### 接⼝中的方法是如何被解释的
+- ``RepositoryFactorySupport.getRepository`` : 添加了许多 Advice，如：DefaultMethodInvokingMethodInterceptor 、 QueryExecutorMethodInterceptor 
+
+- ``AbstractJpaQuery.execute`` ：执⾏具体的查询
+
+- ``org.springframework.data.repository.query.parser.Part`` : 语法解析
 
 
 # 3、NoSQL 实践
@@ -327,7 +392,7 @@ Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA �
 - [Spring Framework Documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/)
 - [Spring Cloud 中文网](https://www.springcloud.cc/)
 - [spring事务管理(详解和实例)](https://www.cnblogs.com/yixianyixian/p/8372832.html)
-- [Project Lombok](https://projectlombok.org/)
+- [十分钟搞懂 Lombok 使用与原理](https://juejin.im/post/5a6eceb8f265da3e467555fe)
 
 
 
