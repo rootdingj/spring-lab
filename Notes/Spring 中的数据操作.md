@@ -380,6 +380,26 @@ Lombok 处理流程作用于 Javac 的编译期，在Javac 解析成抽象语法
 
 - ``org.springframework.data.repository.query.parser.Part`` : 语法解析
 
+## 2.5.通过 MyBatis 操作数据库
+### 简介
+[MyBatis](https://github.com/mybatis/mybatis-3) 是一款优秀的持久层框架，支持定制化 SQL、存储过程和高级映射。
+
+在 Spring 中使用 MyBatis :
+- [MyBatis Spring Adapter](https://github.com/mybatis/spring) 
+- [MyBatis Spring-Boot-Starter](https://github.com/mybatis/spring-boot-starter) 
+
+SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的要求。
+
+### 简单配置
+- mybatis.mapper-locations = classpath*:mapper/**/*.xml 
+- mybatis.type-aliases-package = 类型别名的包名
+- mybatis.type-handlers-package = TypeHandler 扫描包名
+- mybatis.configuration.map-underscore-to-camel-case = true 
+
+### Mapper 的定义与扫描
+- @MapperScan 配置扫描位置
+- @Mapper 定义接⼝
+- 映射的定义—— XML 与注解
 
 # 3、NoSQL 实践
 
