@@ -269,6 +269,53 @@ Spring Data 提供一个大家熟悉的、一致的、基于Spring的数据访�
 
 Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA 规范的再次封装抽象。
 
+## 2.2.JPA 中常用注解
+
+### java 对象与数据库字段转化
+- @Entity：标识实体类是 JPA 实体，告诉 JPA 在程序运行时生成实体类对应表
+
+- @Table：设置实体类在数据库所对应的表名
+
+- @Id：标识类里所在变量为主键
+
+- @GeneratedValue：设置主键生成策略（依赖于具体的数据库）
+
+- @Column：表示属性所对应字段名进行个性化设置
+
+- @Transient：表示属性并非数据库表字段的映射,ORM框架将忽略该属性
+
+- @Temporal：将日期字段转化成 java.util 包中的时间日期类型。注入数据库的类型有三种：
+    - TemporalType.DATE（2008-08-08）
+    - TemporalType.TIME（20:00:00）
+    - TemporalType.TIMESTAMP（2008-08-08 20:00:00.000000001）
+
+- @Enumerated：使用此注解映射枚举字段，以String类型存入数据库。注入数据库的类型有两种：EnumType.ORDINAL（Interger）、EnumType.STRING（String）
+
+- @Embeddable、@Embedded：　当一个实体类要在多个不同的实体类中进行使用，而其不需要生成数据库表。
+    - @Embeddable：注解在类上，表示此类是可以被其他类嵌套
+    - @Embedded：注解在属性上，表示嵌套被@Embeddable注解的同类型类
+
+- @ElementCollection：集合映射
+
+- @CreatedDate、@CreatedBy、@LastModifiedDate、@LastModifiedBy：表示字段为创建时间字段（insert自动设置）、创建用户字段（insert自动设置）、最后修改时间字段（update自定设置）、最后修改用户字段（update自定设置）
+
+- @MappedSuperclass：注解的类继承另一个实体类 或 标注@MappedSuperclass类，他可使用@AttributeOverride 或 @AttributeOverrides注解重定义其父类属性映射到数据库表中字段。
+
+### java对象与json转化
+- @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")：将Date属性转换为String类型， timezone解决（相差8小时）
+
+- @JsonSerialize：作用在类或字段上，转化java对象到json格式（需自定义转化类继承JsonSerializer<T>）
+
+- @JsonDeserialize：作用在类或字段上，转化json格式到java对象（需自定义转化类继承JsonDeserializer<T>）
+
+- @JsonProperty：作用在属性上，把属性名称序列化为另一个名称（trueName属性序列化为name）
+
+- @JsonIgnoreProperties(ignoreUnknown = true)：作用在类上，忽略掉json数据里包含了实体类没有的字段
+
+- @JsonIgnore：在json序列化时将java bean中的一些属性忽略掉，序列化和反序列化都受影响
+
+
+
 # 3、NoSQL 实践
 
 
@@ -280,6 +327,8 @@ Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA �
 - [Spring Framework Documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/)
 - [Spring Cloud 中文网](https://www.springcloud.cc/)
 - [spring事务管理(详解和实例)](https://www.cnblogs.com/yixianyixian/p/8372832.html)
+- [Project Lombok](https://projectlombok.org/)
+
 
 
 
