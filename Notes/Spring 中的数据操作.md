@@ -314,7 +314,7 @@ Spring Data JPA 是 Spring Data 项目中的一个模块，可以理解为 JPA �
 
 - @JsonIgnore：在json序列化时将java bean中的一些属性忽略掉，序列化和反序列化都受影响
 
-## 2.2.JPA 中常用注解
+## 2.2.Spring Data JPA 中常用注解
 通过简单注解来实现精简代码来达到消除冗长代码的目的。
 
 ### 常用注解
@@ -365,7 +365,7 @@ Lombok 处理流程作用于 Javac 的编译期，在Javac 解析成抽象语法
 ## 2.4.Repository 是怎么从接⼝口变成 Bean 的
 
 ### Repository Bean 是如何创建的
-- ``org.springframework.data.jpa.repository.config.JpaRepositoriesRegistrar`` : 激活了 @EnableJpaRepositories ，并 返回了 JpaRepositoryConfigExtension 
+- ``org.springframework.data.jpa.repository.config.JpaRepositoriesRegistrar`` : 激活了 @EnableJpaRepositories ，并返回了 JpaRepositoryConfigExtension 
 
 - ``RepositoryBeanDeﬁnitionRegistrarSupport.registerBeanDeﬁnitions`` ：为每一个 Repository 注册 Repository Bean（类型是 JpaRepositoryFactoryBean ）
 
@@ -391,6 +391,7 @@ Lombok 处理流程作用于 Javac 的编译期，在Javac 解析成抽象语法
 SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的要求。
 
 ### 简单配置
+
 - mybatis.mapper-locations = classpath*:mapper/**/*.xml 
 - mybatis.type-aliases-package = 类型别名的包名
 - mybatis.type-handlers-package = TypeHandler 扫描包名
@@ -400,6 +401,12 @@ SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的�
 - @MapperScan 配置扫描位置
 - @Mapper 定义接⼝
 - 映射的定义—— XML 与注解
+
+## 2.6.官方插件 MyBatis Generator
+
+
+## 2.7.国产插件  MyBatis PageHelper
+
 
 # 3、NoSQL 实践
 
