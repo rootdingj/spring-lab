@@ -403,6 +403,12 @@ SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的�
 - 映射的定义—— XML 与注解
 
 ## 2.6.官方插件 MyBatis Generator
+[MyBatis Generator](http://www.mybatis.org/generator/) 是 MyBatis 官方的代码⽣成器，可以根据数据库表生成相关代码：
+- POJO
+- Mapper 接⼝
+- SQL Map XML
+
+
 
 
 ## 2.7.国产插件  MyBatis PageHelper
