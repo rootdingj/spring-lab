@@ -408,11 +408,34 @@ SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的�
 - Mapper 接⼝
 - SQL Map XML
 
+### 运⾏ MyBatis Generator
+- 命令行 ：java -jar mybatis-generator-core-x.x.x.jar -conﬁgﬁle generatorConﬁg.xml 
 
+- Maven Plugin（mybatis-generator-maven-plugin）： 
+    - mvn mybatis-generator:generate 
+    - ${basedir}/src/main/resources/generatorConﬁg.xml
+- Java 程序
 
+### 配置 MyBatis Generator
+- generatorConﬁguration 
+- context  
+    - jdbcConnection  
+    - javaModelGenerator 
+    - sqlMapGenerator 
+    - javaClientGenerator （ANNOTATEDMAPPER / XMLMAPPER / MIXEDMAPPER）
+    - table 
+
+### 使⽤用⽣成的对象
+- 简单操作，直接使⽤生成的 xxxMapper 的方法
+- 复杂查询，使⽤生成的 xxxExample 对象
+- 如果需要手写微调，使用两套 Mapper 比较好，重新生成不被覆盖。
 
 ## 2.7.国产插件  MyBatis PageHelper
-
+### MyBatis PageHepler（https://pagehelper.github.io） 
+- ⽀持多种数据库
+- ⽀持多种分⻚方式
+- SpringBoot ⽀持（https://github.com/pagehelper/pagehelper-spring-boot ）
+    - pagehelper-spring-boot-starter
 
 # 3、NoSQL 实践
 
