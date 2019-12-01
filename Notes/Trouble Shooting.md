@@ -11,6 +11,24 @@ TROUBLE
 
 [SpringBoot与SpringCloud的版本对应详细版](https://www.cnblogs.com/zhuwenjoyce/p/10261079.html)
 
+## 3.docker 中启动 mongo 失败，问题排查：
+- 执行：``docker run --name mongo -p 27017:27017 -v ~/docker-data/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo``
+
+- 执行：``docker ps `` 找不到对应的 mongo 容器
+
+- 执行：``docker ps -a`` 发现 mongo 容器的状态是 Exited
+
+- 执行：``docker logs mongo`` 发现错误日志：
+WiredTiger error (17) [1575191875:212498][1:0x7f4cfeba1b00], connection: __posix_open_file, 669: /data/db/WiredTiger.wt: handle-open: open: File exists Raw: [1575191875:212498][1:0x7f4cfeba1b00], connection: __posix_open_file, 669: /data/db/WiredTiger.wt: handle-open: open: File exists
+...
+
+- 删除 mongo 容器：``docker container rm mongo`` 
+
+- 执行：``docker run --name mongo -p 27017:27017  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo`` 
+
+
+
+
 
 
 

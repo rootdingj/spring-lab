@@ -438,6 +438,69 @@ SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的�
     - pagehelper-spring-boot-starter
 
 # 3、NoSQL 实践
+## 3.1.通过 Docker 辅助开发
+
+### Docker 简介
+Linux 容器是一种虚拟化技术，与虚拟机不同的是，他不是模拟一个完整的操作系统，而是对进程进行隔离。或者说，在正常进程的外面套了一个保护层。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离。
+
+由于容器是进程级别的，相比虚拟机有很多优势：
+- 启动快
+- 资源占用少
+- 体积小
+
+Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。
+
+### Docker 的主要用途：
+- 提供一次性的环境。比如，本地测试他人的软件、持续集成的时候提供单元测试和构建的环境。
+
+- 提供弹性的云服务。因为 Docker 容器可以随开随关，很适合动态扩容和缩容。
+
+- 组建微服务架构。通过多个容器，一台机器可以跑多个服务，因此在本机就可以模拟出微服务架构。
+
+### Docker 的常用命令：
+#### 镜像相关 
+- docker pull \<image> 
+- docker search \<image> 
+
+#### 容器器相关 
+- docker run 
+- docker start/stop \<容器器名> 
+- docker ps \<容器器名> 
+- docker logs \<容器器名> 
+- docker container rm \<容器器名> 
+
+## 3.2.在Spring 中访问 MongoDB 
+
+### 通过 Docker 启动 MongoDB
+
+1.获取镜像
+- ``docker pull mongo`` 
+
+2.运⾏行行 MongoDB 镜像 
+ - `` docker run --name mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo ``
+
+  - `` docker run --name mongo -p 27017:27017 -v ~/docker-data/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo ``
+
+3.查看 mongo 容器是否启动成功
+- docker ps
+- docker ps -a
+
+3.登录到 MongoDB 容器器中 
+- ``docker exec -it mongo bash`` 
+
+4.通过 Shell 连接 MongoDB 
+- ``mongo -u admin -p admin``
+
+## 3.3.在Spring 中访问 Redis
+
+
+## 3.4.Redis 的哨兵与集群模式
+
+
+## 3.5.Spring 的缓存抽象
+
+
+## 3.6.Redis 在 Spring 中的其他⽤用法
 
 
 # 4、数据访问进阶
@@ -449,6 +512,7 @@ SQL 较简单用 JPA，SQL复杂用 MyBatis 等框架，大厂 DBA 对 SQL 的�
 - [Spring Cloud 中文网](https://www.springcloud.cc/)
 - [spring事务管理(详解和实例)](https://www.cnblogs.com/yixianyixian/p/8372832.html)
 - [十分钟搞懂 Lombok 使用与原理](https://juejin.im/post/5a6eceb8f265da3e467555fe)
+- [docker hub](https://hub.docker.com/)
 
 
 
