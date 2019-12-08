@@ -491,6 +491,51 @@ Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接
 4.通过 Shell 连接 MongoDB 
 - ``mongo -u admin -p admin``
 
+### 初始化 MongoDB 的库及权限
+- 创建库   
+`` use springbucks ``;
+
+- 创建⽤用户  
+```Text 
+db.createUser(    
+        {      
+            user: "springbucks",      
+            pwd: "springbucks",      
+            roles: [         
+                {
+                    role: "readWrite", 
+                    db: "springbucks" 
+                }      
+            ]    
+        }  
+    )
+```
+
+- show users;
+    - use springbucks;
+    - show collections;
+    - db.coffee.find();
+
+### Spring Data MongoDB 的基本⽤用法
+
+- [MongoDB](https://www.mongodb.com) 是⼀一款开源的文档型数据库。
+- Spring 对 MongoDB 的支持 
+    - Spring Data MongoDB 
+    - MongoTemplate 
+    - Repository ⽀持
+- 注解 
+    - @Document 
+    - @Id 
+- MongoTemplate 
+    - save / remove 
+    - Criteria / Query / Update 
+-  Repository
+    - @EnableMongoRepositories   
+    - 对应接口
+        - MongoRepository<T, ID> 
+        - PagingAndSortingRepository<T, ID> 
+        - CrudRepository<T, ID> 
+
 ## 3.3.在Spring 中访问 Redis
 
 
