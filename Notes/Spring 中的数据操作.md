@@ -480,10 +480,13 @@ Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接
  - `` docker run --name mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo ``
 
   - `` docker run --name mongo -p 27017:27017 -v ~/docker-data/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d mongo ``
+  
 
 3.查看 mongo 容器是否启动成功
 - docker ps
 - docker ps -a
+- docker start mongo
+- docker stop mongo
 
 3.登录到 MongoDB 容器器中 
 - ``docker exec -it mongo bash`` 
@@ -537,6 +540,11 @@ db.createUser(
         - CrudRepository<T, ID> 
 
 ## 3.3.在Spring 中访问 Redis
+
+### 通过 Docker 启动 redis
+- 获取镜像 ：docker pull redis 
+- 启动 Redis ：docker run --name redis -d -p 6379:6379 redis  
+
 
 
 ## 3.4.Redis 的哨兵与集群模式
