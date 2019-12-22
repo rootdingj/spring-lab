@@ -1,4 +1,4 @@
-package com.spring.data.redis.model;
+package com.spring.data.cache.cache.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

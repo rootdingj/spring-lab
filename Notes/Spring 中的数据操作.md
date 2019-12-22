@@ -202,7 +202,7 @@ public-key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALS8ng1XvgHrdOgm4pxrnUdt3sXtu/E8My9Kz
 Spring 会将数据操作的异常转换为 DataAccessException，⽆无论使⽤用何种数据访问⽅方式，都能使⽤用⼀一样的异常。
 
 ### JDBC 异常类型
-<div align="center"> <img src="../Assets/images/02.DataAccessException.png" width="480px"> </div><br>
+<div align="center"> <img src="../Assets/images/02.DataAccessException.png" width="520px"> </div><br>
 
 ### Spring是怎么认识那些错误码的
 - 通过 SQLErrorCodeSQLExceptionTranslator 解析错误码 
@@ -575,9 +575,53 @@ JedisCluster
 
 ## 3.5.Spring 的缓存抽象
 
+### 为不同的缓存提供一层抽象 
+- 为 Java ⽅法增加缓存，缓存执行结果
+- 支持 ConcurrentMap、EhCache、Caﬀeine、JCache（JSR-107）
+- 接口
+    - org.springframework.cache.Cache 
+    - org.springframework.cache.CacheManager 
+
+### 基于注解的缓存
+@EnableCaching  
+- @Cacheable 
+- @CacheEvict 
+- @CachePut 
+- @Caching 
+- @CacheConfig
 
 ## 3.6.Redis 在 Spring 中的其他⽤用法
 
+### 与 Redis 建⽴立连接
+配置连接⼯厂 
+- LettuceConnectionFactory 与 JedisConnectionFactory 
+    - RedisStandaloneConfiguration 
+    - RedisSentinelConfiguration 
+    - RedisClusterConfiguration 
+
+### 读写分离
+Lettuce 内置支持读写分离 ：
+- 只读主、只读从
+- 优先读主、优先读从
+
+LettuceClientConfiguration 、LettucePoolingClientConfiguration 、LettuceClientConfigurationBuilderCustomizer 
+
+### RedisTemplate
+RedisTemplate<K, V>  
+- opsForXxx() 
+
+StringRedisTemplate
+
+### Redis Repository 的实体注解 
+- @RedisHash 
+- @Id 
+- @Indexed
+
+
+### 处理不同类型数据源的 Repository 如何区分这些 Repository 
+- 根据实体的注解
+- 根据继承的接口类型
+- 扫描不不同的包
 
 # 4、数据访问进阶
 
