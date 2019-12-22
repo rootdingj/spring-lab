@@ -545,10 +545,33 @@ db.createUser(
 - 获取镜像 ：docker pull redis 
 - 启动 Redis ：docker run --name redis -d -p 6379:6379 redis  
 
+### 
+ [Redis](https://redis.io) 是一款开源的内存 K-V 存储，⽀持多种数据结构。
 
+ Spring 对 Redis 的支持，Spring Data Redis：
+ - 支持的客户端 Jedis / Lettuce
+ - RedisTemplate
+ - Repository 支持  
+
+Jedis 客户端：
+- Jedis 不是线程安全的
+- 通过 JedisPool 获得 Jedis 实例
+- 直接使用 Jedis 中的方法
 
 ## 3.4.Redis 的哨兵与集群模式
+### Redis 的哨兵模式
+Redis Sentinel 是 Redis 的一种⾼可用⽅案 
+-  监控、通知、⾃自动故障转移、服务发现
 
+JedisSentinelPool 
+
+### Redis 的集群模式
+Redis Cluster 
+- 数据⾃动分片（分成16384个 Hash Slot ）
+- 在部分节点失效时有一定可用性
+
+JedisCluster 
+- Jedis 只从 Master 读数据，如果想要⾃动读写分离，可以定制
 
 ## 3.5.Spring 的缓存抽象
 
