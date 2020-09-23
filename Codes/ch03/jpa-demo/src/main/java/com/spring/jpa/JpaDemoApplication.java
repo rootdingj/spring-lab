@@ -19,6 +19,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +45,7 @@ public class JpaDemoApplication implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws Exception {
 		initOrders();
 		findOrders();
+		Connection
 	}
 
 	private void initOrders() {
