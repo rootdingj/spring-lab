@@ -1,0 +1,7 @@
+server:
+  port: 8763
+
+spring:
+  application:
+    # 指定注册到eureka server上的服务名称
+    name: register-ribbon-customer
