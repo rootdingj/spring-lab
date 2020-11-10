@@ -31,12 +31,12 @@ public class CuratorOperDemo {
     public static CuratorFramework getInstance() {
         if (curator == null) {
             // 两种创建 CuratorFramework 的方式
-             curator = CuratorFrameworkFactory.newClient(CONNECTION_URL, 5000, 5000,
-                     new ExponentialBackoffRetry(1000,3));
+//             curator = CuratorFrameworkFactory.newClient(CONNECTION_URL, 5000, 5000,
+//                     new ExponentialBackoffRetry(1000,3));
 
             // fluent风格
-//            curator = CuratorFrameworkFactory.builder().connectString(CONNECTION_URL).sessionTimeoutMs(5000)
-//                .retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+            curator = CuratorFrameworkFactory.builder().connectString(CONNECTION_URL).sessionTimeoutMs(5000)
+                .retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 
             curator.start();
             System.out.println("创建 CuratorFramework 成功！");
@@ -91,26 +91,10 @@ public class CuratorOperDemo {
 //        }
 
     }
-    
-    public static void distributedLock() throws Exception {
-        CuratorFramework curatorClient = getInstance();
-        InterProcessMutex mutexLock = new InterProcessMutex(curatorClient, "/distributedLock");
-        try {
-            // 加锁
-            mutexLock.acquire();
-            // TODO bussiness
-        } catch (Exception e) {
-             e.printStackTrace();
-        }finally {
-            // 释放锁
-            mutexLock.release();
-        }
-    }
 
     public static void main(String[] args) throws Exception {
         CuratorFramework instance = getInstance();
         curatorOper();
-
     }
 
 }
