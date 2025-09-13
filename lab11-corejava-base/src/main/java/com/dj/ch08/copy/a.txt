@@ -1,0 +1,307 @@
+
+Stream I/O and Files
+
+知识点：一. 流的概念
+
+            程序的主要任务是操纵数据。在Java中，把一组有序的数据序列称为流。根据操作的方向，可以把流分为输入流和
+            输出流两种。程序从输入流读取数据，向输出流写出数据。
+
+            文件    输入流                     输出流          文件
+            内存 ------------->  Java程序 ------------------>  内存
+            键盘                                              控制台
+             |                                                  |
+            数据源                                            数据目的地
+
+            Java I/O系统负责处理程序的输入和输出，I/O类库位于java.io包中，它对各种常见的输入流和输出流进行了抽象。
+
+            如果数据流中最小的数据单元是字节，那么称这种流为字节流；如果数据流中最小的数据单元是字符，那么称这种流
+            为字符流。在I/O类库中，java.io.InputStream和java.io.OutputStream分别表示字节输入流和字节输出流，
+            java.io.Reader和java.io.Writer分别表示字符输入流和字符输出流。
+	    注意:它们四个都是抽象类
+
+	    /*
+		流的分类------四个父类(abstract)
+		输入流  输出流
+		字节流  字符流
+
+		字节流输入流	InputStream
+		字节流输出流	OutputStream
+
+		字符流输入流	Reader
+		字符流输出流	Writer
+
+		参照物（代码本身），分清楚，找规律，代码结构
+
+		关心流的三个问题：
+			字节还是字符			Stream        Reader|Writer
+			输入还是输出			In|Reader     Out|Writer    
+			流的目的地是哪里	    
+	    */
+
+
+        二. 字节输入流和输出流概述
+
+            在java.io包中，java.io.InputStream表示字节输入流，java.io.OutputStream表示字节输出流，它们都是抽象类，不
+            能被实例化。
+
+　　　　　　InputStream类提供了一系列和读取数据有关的方法：
+
+            1. read(): 从输入流读取数据：有三种重载形式：　
+
+               a. int read(): 从输入流读取一个8位的字节(1字节是8位)，把它转换为0-255之间的整数，并返回这一整数。如果遇到输入流的结尾，则返回-1;
+               b. int read(byte[] b): 从输入流读取若干个字节，把它们保存到参数b指定的字节数组中。返回的整数表示读取的字节数。如果遇到输入流的结尾，则返回-1;
+               c. int read(byte[] b, int off, int len): 从输入流读取若干个字节，把它们保存到参数b指定的字节数组中。返回的整数表示读取的字节数。参数off指定在字节数组中开始保存数据的起始下标，参数len指定读取的字节数目。返回的整数表示实现读取的字节数。如果遇到输入流的结尾，则返回-1;
+
+               以上第一个read方法从输入流读取一个字节，而其余两个read方法从输入流批量读取若干字节。在从文件或键盘读数据
+               时，采用后面两个read方法可以减少进行物理读文件或键盘的次数，因此能提高I/O操作的效率。
+
+            2. void close(): 关闭输入流，InputStream类本身的close()方法不执行任何操作。它的一些子类覆盖了close()方法，
+                             在close()方法中释放和流有关的系统资源。
+
+            3. int available(): 返回可以从输入流中读取的字节数目；
+            4. skip(long): 从输入流中跳过参数n指定数目的字节。
+            5. boolean markSupported()，void mark(int)，void reset(): 如果要从流中重复读入数据，先用markSupported()方法
+               来判断这个流是否支持重复读入数据，如果返回true，则表明可以在流上设置标记。接下来调用mark(int readLimit)
+               方法从流的当前位置开始设置标记,在readLimit范围内有效。最后调用reset()方法，该方法使输入流重新定位到刚才做了标记的起始位置。这样就可以重复读取做过标记的数据了。
+
+	     /*
+	       mark是否有效取决于readLimit和缓冲区的大小：两个条件只要有一个满足就可以成功
+			
+		//回车：光标回到行首
+		//换行：
+	      */
+　　　　　　OuputStream类提供了一系列和写数据有关的方法：
+
+            1. write(): 向输出流写入数据：有三种重载形式：
+
+               a. void write(int b):　向输出流写入一个字节；
+               b. void write(byte[] b): 把参数b指定的字节数组中的所有字节写到输出流；
+               c. void write(byte[] b, int off, int len): 把参数b指定的字节数组中的所有字节写到输出流，参数off指定字节
+                             数组的起始下标，从这个位置开始输出由参数len指定数目的字节；
+
+               以上第一个write方法从输出流写入一个字节，而其余两个write方法从输出流批量写出若干字节。在向文件或控制台写数据
+               时，采用后面两个write方法可以减少进行物理读文件或键盘的次数，因此能提高I/O操作的效率。
+
+            2. void close(): 关闭输出流，OutputStream类本身的close()方法不执行任何操作。它的一些子类覆盖了close()方法，
+                             在close()方法中释放和流有关的系统资源。
+
+            3. void flush(): OutputStream类本身的flush()方法不执行任何操作，它的一些带有缓冲区的子类(比如BufferedOutputStream
+                             和PrintStream类)覆盖了flush()方法。通过带缓冲区的输出流写数据时，数据先保存在缓冲区中，积累到
+                             一定程度才会真正写到输出流中。缓冲区通常用字节数组实现，实际上是指一块内存空间。flush()方法强
+                             制把缓冲区内的数据写到输出流中。
+
+        三. 常用到的字节输入流和输出流
+	   in:输入流
+            1. ByteArrayInputStream:    读取byte类型的数组中的数据
+            2. FileInputStream:         从文件中读取数据；
+            3. PipedInputStream:        (管道流)连接一个PipedOutputStream;
+            4. ObjectInputStream:       对象输入流；
+            5. StringBufferInputStream: 可以读取一个字符串,在API中已经过时
+	  
+	  out: 输出流
+            6.ByteArrayOutputStream:
+            7.FileOutputStream
+	    8.PipedoutputStream:
+	    9.ObjectoutputStream
+        四. BufferedInputStream类
+
+            BufferedInputStream类覆盖了被过滤的输入流的读数据行为，利用缓冲区来提高读数据的效率。BufferedInputStream类先
+            把一批数据读入到缓冲区，接下来 read()方法只需要从缓冲区内获取数据，就能减少物理性读取数据的次数。
+
+　　　　　　. BufferedInputStream(InputStream in)——参数in指定需要被过滤的输入流。
+　　　　　　. BufferedInputStream(InputStream in, int size)——参数in指定需要被过滤的输入流。参数size指定缓冲区的大小，
+              以字节为单位。
+	     /*
+		封装流
+	     
+	     */
+        五. DataInputStream 类
+
+            DataInputStream 实现了DataInput接口，用于读取基本类型数据，如int, float, long, double和boolean等。
+
+　　　　　　. readByte()——从输入流中读取1个字节，指它转换为byte类型的数据；
+　　　　　　. readLong()——从输入流中读取8个字节，指它转换为long类型的数据；
+　　　　　　. readFloat()——从输入流中读取4个字节，指它转换为float类型的数据；
+　　　　　　. readUTF()—— 从输入流中读取1到3个字节，指它转换为UTF-8字符编码的字符串；
+
+            
+        六. 管道输入类：PipedInputStream 类
+
+            管道输入流从一个管理输出流中读取数据。通常由一个线程向管理输出流写数据，由另一个线程从管理输入流中读取数据，
+            两个线程可以用管理来通信。
+
+
+        七. Reader and Writer概述
+
+            InputStream和OutputStream类处理的是字节流，也就是说，数据流中的最小单元为一个字节，它包括8个二进制位。在许
+            多应用场合，Java应用程序需要读写文本文件。在文本文件中存放了采用特定字符编码的字符。为了便于读于各种字符
+            编码的字符，java.io包中提供了Reader/Writer类，它们分别表示字符输入流和字符输出流。
+
+            在处理字符流时，最主要的问题是进行字符编码的转换。Java语言采用Unicode字符编码。对于每一个字符，Java虚拟机会
+            为其分配两个字节的内存。而在文本文件中，字符有可能采用其他类型的编码，比如GBK和UTF-8字符编码等。
+
+            Reader类能够将输入流中采用其他编码类型的字符转换为Unicode字符，然后在内存中为这些Unicode字符分配内存。Writer
+            类能够把内存中的Unicode字符转换为其他编码类型的字符，再写到输出流中。
+
+            在默认情况下，Reader和Writer会在本地平台的字符编码和Unicode字符编码之间进行编码转换。
+
+                                                 
+                                                   Writer的write()方法
+            使用Unicode字符编码的字      ---------------------------------------->   使用本地平台的字符编码的字符串
+            符串(内存中)                 <---------------------------------------    (数据源/数据目的地)
+                                                   Reader的read()方法
+
+            如果要输入或输出采用特定类型编码的字符串，可以使用InputStreamReader类和OutputStreamWriter类。在它们的构造方法
+            中可以指定输入流或输出流的字符编码。
+
+                                              OutputStreamWriter的write()方法
+            使用Unicode字符编码的字      ---------------------------------------->   使用本地平台的字符编码的字符串
+            符串(内存中)                 <---------------------------------------    (数据源/数据目的地)
+                                               InputStreamReader的read()方法
+
+            由于Reader和Writer采用了字符编码转换技术，Java I/O系统能够正确地访问采用各种字符编码的文本文件，另一方面，在为
+　　　　　　字符分配内存时，虚拟机对字符统一采用Unicode字符编码，因此Java程序处理字符具有平台独立性。
+
+            CharArrayReader        : 把字符数组转换为Reader，从字符数组中读取字符；
+            BufferedReader         : 过滤器，为其他Reader提供读缓冲区，此外，它的readLine()方法能够读入一行字符串；
+            StringReader           : 把字符串转换为Reader，从字符串中读取字符；
+            PipedReader            : 连接一个PipedWriter;
+            PushBackReader         : 能把读到的字符压回到缓冲区中，通常用做编译器的扫描器，在程序中一般很少使用它。
+            InputStreamReader      : 过滤器，把InputStream转换为Reader，可以指定字符编码；
+            FileReader             : 从文件中读取字符；
+
+        八. InputStreamReader类  
+
+            InputStreamReader类把InputStream类型转换为Reader类型，构造方法：
+
+            . InputStreamReader(InputStream in): 按照本地平台的字符编码读取输入流中的字符；
+            . InputStreamReader(InputStream in, String charsetName): 按照指定的字符编码读取输入流中的字符；
+
+        九. FileReader类
+
+            InputStreamReader的一个子类，用于从文件中读取字符数据。该类只能按照本地平台的字符编码来读取数据，用户不能
+            指定其他字符编码类型。
+
+            . FileReader(File file):   参数file指定需要读取的文件；
+            . FileReader(String name): 参数name指定需要读取的文件的路径；
+
+        十. BufferedReader类
+         
+            Reader类的read()方法每次都从数据源读入一个字符，BufferedReader带有缓冲区，它可以先把一批数据读到缓冲区内，
+            接下来的操作都从缓冲区内获取数据，避免每次都从数据源读取数据并进行字符编码转换，从而提高读操作的效率。
+            BufferedReader的readLine()方法可以一次读入一行字符，以字符形式返回。
+
+            . BufferedReader(Reader in): 指定被修饰的Reader类；
+            . BufferedReader(Reader in, int sz): 参数in指定被装饰的Reader类，参数sz指定缓冲区的大小，以字符为单位。
+
+        十一. File类
+
+            File类提供管理文件或目录的方法。File实例表示真实文件系统中的一个文件或者目录。
+
+            1. 构造方法
+
+               . File(String pathname): 参数pathname表示文件路径或者目录路径；
+               . File(String parent, String child): 参数parent表示根路径，参数child表示子路径；
+               . File(File parent, String child): 参数parent表示根路径，参数child表示子路径；
+
+               只处理一个文件，使用第一个构造方法；如处理一个公共目录的若干子目录或文件，那么使用第二个或者第三个更方便。
+
+            2. 普通方法
+            
+	       . boolean createNewFile()：创建一个新的文件，如果文件已经存在，则创建失败（返回false），否则创建
+                                          成功（返回true）。
+	       . boolean delete()：删除文件或者空目录
+	       . boolean mkdir()/mkdirs()：创建一个或者多个目录（连续创建）->如果该目录的父目录不存在话，那么还会创建所
+                                          有的父目录；
+	       . boolean renameTo(File destination)：文件的改名
+	       . boolean canRead()/canWrite()：判断指定的文件是否能读取或者写入数据
+	       . boolean exists()：判断指定的文件或者目录是否存在
+	       . String[] list()：返回指定目录下所有文件名或者子目录名所组成的字符串数组
+	       . long lastModified()：返回指定文件最后一次被修改的时间（从1970年1月1日凌晨12点到这个文件的修改时间
+                                         之间所经历的毫秒数）
+	       . String getPath()/getAbsolutePath()：返回指定文件或者目录的路径和绝对路径
+               . String getCanonicalPath(): 获取该File对象所代表的文件或者目录的正规路径
+	       . String getParent()/getName()：返回指定文件或者目录的父目录（没有返回null）和名字
+
+               File f = new File(".\\test.txt"));
+               System.out.println(f.getCanonicalPath());        //c:\mypath\test.txt
+               System.out.println(f.getAbsolutePath());         //c:\mypath\ .\test.txt
+               System.out.println(f.getPath());                 //.\test.txt
+               if(!f.exists()) f.createNewFile());      
+
+
+        十一. FileInputStream and FileOutputStream
+ 
+	      1. 当创建一个FileInputStream对象的时候，文件必须存在以及是可读的FileInputStream(File file)
+      		 FileInputStream(String name)
+	      2. 当创建一个FileOutputStream对象的时候，可以创建一个新的文件，也可以覆盖一个已经存在的同名文件。
+		 FileOutputStream(File file)
+    		 FileOutputStream(File file, boolean append)	
+		 如果要创建的文件已经存在，可以选择向旧文件添加新的内容（append为true）或者新的内容覆盖旧文件的
+                 内容（append为false）。
+
+		 FileOutputStream(String name)
+     		 FileOutputStream(String name, boolean append)
+		 如果要创建的文件已经存在，可以选择向旧文件添加新的内容（append为true）或者新的内容覆盖旧文件的
+                 内容（append为false）。
+
+
+                注意：在这里写个com.briup.ch14.CopyTime.java
+              
+        十二. FileReader and FileWriter   
+
+              1. 读写字符文件方便
+	      2. 构造器
+		 FileReader(File file)
+    		 FileReader(String name)
+    		 FileWriter(File file)
+   		 FileWriter(String filename)
+	
+		 FileReader：new FileReader(“d:/back/string.txt”) = 
+                             new InputStreamReader(new FileInputStream(“d:/back/string.txt”));
+		 FileWriter：new FileWriter(“d:/back/string.txt”) = 
+                             new InputStreamWriter(new FileOutputStream(“d:/back/string.txt”));
+        
+              
+        十三. PrintWriter
+
+              可以输出基本数据类型、对象、字符（字符数组）和字符串，但是不能输出字节流。
+	 
+              PrintWriter类可以代替桥和BufferedWriter
+              PrintStream类既可以输出字节流也可以输出字符流或者字符串
+
+        十四. Reading and Writing with RandomAccessFile
+
+              1. 实现数据的输入和输出
+	      2. 用它能够提供读写文件的功能
+	      3. 提供通过一个文件指针从文件的某一个断点开始读写数据的功能
+	      4. 构造器
+		 RandomAccessFile(File file, String mode) 
+    		 RandomAccessFile(String filename, String mode)
+		 mode可以选择读、写和读写的方式
+	      5. 方法
+		 read()/write()    seek(long pointer) 定位到文件的断点
+
+        十五. 对象的序列化和反序列化
+
+              对象的序列化：  把对象写到一个输出流；
+              对象的反序列化：从一个输入流中读取一个对象；
+
+              1. 对象的持久化
+	      2. 仅仅是一个对象的数据被序列化（将对象的数据序列化成字节流）
+	      3. 标识为transit的数据不能被序列化 例如：transit 类名 表示该类不能被序列化 或者transit 字段
+	      4. 要序列化的对象必须实现java.io.Serializable接口
+
+              对象的序列化主要用于：
+	      1. 网络中传输的是字节流的数据，网络中对象的传输，是将对象的数据经过序列化后转换成字节流。
+	      2. 将对象数据序列化到文件中，将对象数据转换成字节流存储到文件中。
+                 从文件中读取字节流数据并转换成对象叫做对象的反序列化。
+
+              ObjectInputStream 和ObjectOutputStream(对象输入和输出流，可以读写基本数据类型和对象)
+	      1. ObjectInputStream 和ObjectOutputStream为应用程序提供对象的持久化存储
+	      2. 一个ObjectInputStream 可以反序列化通过ObjectOutputStream写入的基本数据类型和对象
+	      3. 构造器
+		 ObjectInputStream(InputStream in)
+    		 ObjectOutputStream(OutputStream out)
+	      4. 方法
+		 readObject()/writeObject()  将对象写入到输出流中或者从输入流中读取对象
