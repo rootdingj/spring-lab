@@ -1,0 +1,3 @@
+server:
+  # 指定Tomcat端口
+  port: 8001

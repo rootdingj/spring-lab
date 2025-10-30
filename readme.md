@@ -10,5 +10,12 @@
   - Spring Boot 2.3.x
   - apache-maven-3.8.2
 
-注：maven 和 jdk 版本关系，maven 可以向下兼容 jdk 版本，选个较新的版本即可
+
+
+
+
+# 参考资料
+- [玩转Spring全家桶](https://time.geekbang.org/course/intro/156)
+- [geektime-spring-family](https://github.com/geektime-geekbang/geektime-spring-family)
+
 
