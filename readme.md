@@ -1,9 +1,8 @@
 春天的实验室
 ====================
-受芋道源码 [SpringBoot-Labs](https://github.com/yudaocode/SpringBoot-Labs) 的影响，我把 Java 知识体系学习的练习整理到这个仓库，姑且直白的翻译为“春天的实验室”吧。
 
 
-### 实验环境
+### 工具版本
 
   - jdk1.8
   - IntelliJ IDEA 2024.3.5
