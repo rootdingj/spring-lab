@@ -1,7 +1,0 @@
-# Initializers
-org.springframework.context.ApplicationContextInitializer=\
-com.dj.lab21.listener.HelloApplicationContextInitializer
-
-# Application Listeners
-org.springframework.context.ApplicationListener=\
-com.dj.lab21.listener.HelloSpringApplicationRunListener
